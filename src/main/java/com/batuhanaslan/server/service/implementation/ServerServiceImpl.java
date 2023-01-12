@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.util.Collection;
 
+import static org.springframework.data.domain.PageRequest.*;
+
 @RequiredArgsConstructor
 @Service
 @Transactional
@@ -43,7 +45,9 @@ public class ServerServiceImpl implements ServerService {
 
     @Override
     public Collection<Server> list(int limit) {
-        return null;
+        log.info("Fetching all servers: {}");
+
+        return serverRepository.findAll(of(0,limit)).toList();
     }
 
     @Override
