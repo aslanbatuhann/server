@@ -8,10 +8,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.Collection;
+import java.util.Random;
 
 import static java.lang.Boolean.*;
 import static org.springframework.data.domain.PageRequest.*;
@@ -48,12 +50,12 @@ public class ServerServiceImpl implements ServerService {
     public Collection<Server> list(int limit) {
         log.info("Fetching all servers: {}");
 
-        return serverRepository.findAll(of(0,limit)).toList();
+        return serverRepository.findAll(of(0, limit)).toList();
     }
 
     @Override
     public Server get(Long id) {
-        log.info("Fetching server by id: {}",id);
+        log.info("Fetching server by id: {}", id);
 
         return serverRepository.findById(id).get();
     }
@@ -75,6 +77,8 @@ public class ServerServiceImpl implements ServerService {
 
 
     private String setServerImageUrl() {
-        return null;
+        String[] imageNames = {"server1.png", "server2.png", "server3.png", "server4.png"};
+
+        return ServletUriComponentsBuilder.fromCurrentContextPath().path("/server/image/"+ imageNames[new Random().nextInt(4)]).toUriString();
     }
 }
