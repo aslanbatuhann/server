@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.util.Collection;
 
+import static java.lang.Boolean.*;
 import static org.springframework.data.domain.PageRequest.*;
 
 @RequiredArgsConstructor
@@ -52,17 +53,24 @@ public class ServerServiceImpl implements ServerService {
 
     @Override
     public Server get(Long id) {
-        return null;
+        log.info("Fetching server by id: {}",id);
+
+        return serverRepository.findById(id).get();
     }
 
     @Override
     public Server update(Server server) {
-        return null;
+        log.info("Updating server: {}", server.getName());
+
+        return serverRepository.save(server);
     }
 
     @Override
     public Boolean delete(Long id) {
-        return null;
+        log.info("Deleting server by ID: {}", id);
+        serverRepository.deleteById(id);
+
+        return TRUE;
     }
 
 
