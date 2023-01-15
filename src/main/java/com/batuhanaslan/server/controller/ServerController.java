@@ -1,21 +1,19 @@
 package com.batuhanaslan.server.controller;
 
-import com.batuhanaslan.server.enumeration.Status;
 import com.batuhanaslan.server.model.Response;
 import com.batuhanaslan.server.model.Server;
 import com.batuhanaslan.server.service.implementation.ServerServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.io.IOException;
 
 import static com.batuhanaslan.server.enumeration.Status.SERVER_UP;
 import static java.time.LocalDateTime.now;
 import static java.util.Map.*;
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
@@ -49,6 +47,20 @@ public class ServerController {
                         .message(server.getStatus() == SERVER_UP ? "Ping Success" : "Ping failed")
                         .status(OK)
                         .statusCode(OK.value())
+                        .build()
+        );
+    }
+
+    @PostMapping("/save")
+    public ResponseEntity<Response> saveServer(@RequestBody @Valid Server server) {
+
+        return ResponseEntity.ok(
+                Response.builder()
+                        .timeStamp(now())
+                        .data(of("server", serverService.create(server)))
+                        .message("Server created")
+                        .status(CREATED)
+                        .statusCode(CREATED.value())
                         .build()
         );
     }
